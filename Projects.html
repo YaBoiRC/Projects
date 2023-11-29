@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+        crossorigin="anonymous">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif; /* Improved font */
+        }
+
+        #toolbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            background-color: #343a40;
+            border-right: 1px solid #d1d1d1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px;
+            z-index: 1001;
+        }
+
+        .btn {
+            border-radius: 2px;
+            margin-top: 10px;
+        }
+
+        #clearAllBtn {
+            margin-top: auto;
+            margin-bottom: 20px;
+            background-color: #dc3545; /* Red color */
+            border-color: #dc3545;
+        }
+
+        #clearAllBtn:hover {
+            background-color: #bd2130; /* Color changes when hovered over */
+        }
+
+        #board-container {
+            margin-left: 60px;
+            padding: 20px;
+            margin-top: 60px;
+        }
+
+        .list {
+            display: inline-block;
+            vertical-align: top;
+            margin-right: 10px;
+            width: auto;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .card p,
+        .form-check-label {
+            max-width: 250px; /* Set your desired max-width here */
+            overflow: hidden;
+            white-space: normal; /* Update this line */
+        }
+
+        nav.navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="toolbar">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <img src="C:\Users\Creep\Downloads\proyectslogo.png" alt="Image" style="width: 20px; height: 20px;">
+        </button>
+
+        <button id="addListBtn" class="btn btn-sm btn-primary">
+            <img src="C:\Users\Creep\Downloads\iconsaaa1.png" alt="Image" style="width: 20px; height: 20px;">
+        </button>
+        <button id="checkListBtn" class="btn btn-sm btn-primary">
+            <img src="C:\Users\Creep\Downloads\iconsaaa2.png" alt="Image" style="width: 20px; height: 20px;">
+        </button>
+        <button id="settingsBtn" class="btn btn-sm btn-primary btn-bottom" data-bs-toggle="modal"
+            data-bs-target="#settingsModal">
+            <img src="C:\Users\Creep\Documents/gear.png" alt="Image" style="width: 20px; height: 20px;">
+        </button>
+        <button id="clearAllBtn" class="btn btn-sm btn-danger btn-bottom">
+            <img src="C:\Users\Creep\Downloads\iconsaaa3.png" alt="Image" style="width: 20px; height: 20px;">
+        </button>
+    </div>
+
+    <div id="board-container" class="container-fluid">
+        <div id="board" class="row"></div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">My Projects</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Please choose one of the following:
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="saveProjects()">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="loadProjects()">Load</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="settingsModalLabel">Settings</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Change Toolbar Color:</p>
+                    <input type="color" id="toolbarColorInput" value="#343a40">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="applySettings()">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="tutorialpromptModal" tabindex="-1" aria-labelledby="tutorialpromptModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="tutorialpromptModalLabel">Welcome to Projects!</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Would you like a tutorial?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="tutorialModal()" data-bs-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="tutorialModal" tabindex="-1" aria-labelledby="tutorialModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="tutorialModalLabel">Tutorial</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img src="C:\Users\Creep\Documents\pbutton.png" alt="Placeholder Image" style="width: 50px; height: 50px;">
+                        </div>
+                        <div class="col">
+                            <p>Manage your 'Project' saving and loading.</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img src="C:\Users\Creep\Documents\iconsaaacolor1.png" alt="Placeholder Image" style="width: 50px; height: 50px;">
+                        </div>
+                        <div class="col">
+                            <p>Adds a card list.</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img src="C:\Users\Creep\Documents\iconsaaacolor2.png" alt="Placeholder Image" style="width: 50px; height: 50px;">
+                        </div>
+                        <div class="col">
+                            <p>Adds a check list.</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img src="C:\Users\Creep\Documents\settingsblue.png" alt="Placeholder Image" style="width: 50px; height: 50px;">
+                        </div>
+                        <div class="col">
+                            <p>Adjust available settings. (personalization)</p>
+                        </div>
+                    </div>
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <img src="C:\Users\Creep\Documents\iconsaaacolor3.png" alt="Placeholder Image" style="width: 50px; height: 50px;">
+                        </div>
+                        <div class="col">
+                            <p>Delete the entirety of the board.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Add any additional buttons or content here if needed -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-BSnFZTEoFaL6ezGY2y2ms8L4wR8dGrQbNb5vHbgfvVVj9MzI5Kd8T9FqFJdAcK6"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.slim.min.js"
+        integrity="sha384-eAqJpBj2HAfnUGFj7ai3qM4xsMCkpFmSH4paK8R+DL2HTU/6Z/hRTt8+pR6L4N2"
+        crossorigin="anonymous"></script>
+    
+    <script>
+        document.getElementById("addListBtn").addEventListener("click", function () {
+            addList("New List");
+        });
+
+        document.getElementById("checkListBtn").addEventListener("click", function () {
+            addList("New Checklist", true);
+        });
+
+        function addList(title, isChecklist = false) {
+            const board = document.getElementById("board");
+            const list = document.createElement("div");
+            list.className = "list col-md-4";
+            list.innerHTML = `
+                <h2 class="list-title" contentEditable="true">${title}</h2>
+                <div class="content-container"></div>
+                <div class="button-container">
+                    <button class="btn btn-outline-danger btn-sm delete-list">ˣ</button>
+                    <button class="btn btn-outline-primary btn-sm ${isChecklist ? 'add-checkbox' : 'add-card'}">+</button>
+                </div>
+            `;
+            board.appendChild(list);
+
+            // Add event listeners for the new list or checklist
+            list.querySelector(isChecklist ? ".add-checkbox" : ".add-card").addEventListener("click", function () {
+                if (isChecklist) {
+                    const checkbox = createCheckbox("Write your activity here...", true);
+                    list.querySelector(".content-container").appendChild(checkbox);
+                } else {
+                    const card = document.createElement("div");
+                    card.className = "card";
+                    card.innerHTML = `
+                        <p contentEditable="true">Write your text here...</p>
+                        <button class="btn btn-outline-danger delete-card">Remove Card</button>
+                    `;
+                    list.querySelector(".content-container").appendChild(card);
+                }
+            });
+
+            list.querySelector(".delete-list").addEventListener("click", function () {
+                list.remove();
+            });
+
+            document.getElementById("clearAllBtn").addEventListener("click", function () {
+                const board = document.getElementById("board");
+                board.innerHTML = ""; // This clears all child elements inside the board div
+            });
+        }
+
+        // Function to create a checkbox element
+        function createCheckbox(labelText, isChecked) {
+            const checkbox = document.createElement("div");
+            checkbox.className = "form-check";
+            checkbox.innerHTML = `
+                <label class="form-check-label" contentEditable="true">${labelText}</label>
+                <button class="btn btn-outline-danger btn-sm remove-checkbox">Remove</button>
+                <input class="form-check-input" type="checkbox" value="" ${isChecked ? "checked" : ""}>
+            `;
+
+            // Add event listener to remove the checkbox when the button is clicked
+            checkbox.querySelector(".remove-checkbox").addEventListener("click", function () {
+                checkbox.remove();
+            });
+
+            return checkbox;
+        }
+    </script>
+
+    <script>
+        // Remove Card
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("delete-card")) {
+                e.target.parentElement.remove();
+            }
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            tutorialpromptModal();
+        });
+        // JavaScript functions to open and close the modal
+        function openModal() {
+            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+            myModal.show();
+        }
+        function tutorialpromptModal() {
+            var tutorialpromptModal = new bootstrap.Modal(document.getElementById('tutorialpromptModal'));
+            tutorialpromptModal.show();
+        }
+        function closeModal() {
+            $('#exampleModal').modal('hide'); // this is jQuery code ok
+        }
+        function tutorialModal() {
+            var tutorialModal = new bootstrap.Modal(document.getElementById('tutorialModal'));
+            tutorialModal.show();
+        }
+    </script>
+
+    <script>
+        function saveProjects() {
+            const board = document.getElementById("board");
+            const projectData = board.innerHTML;
+            localStorage.setItem("savedProjects", projectData);
+            alert("Projects saved successfully!");
+        }
+
+        function loadProjects() {
+            const board = document.getElementById("board");
+            const savedProjects = localStorage.getItem("savedProjects");
+
+            if (savedProjects) {
+                board.innerHTML = savedProjects;
+
+                // Enable the contentEditable for the thing
+                const editableElements = board.querySelectorAll('[contentEditable="true"]');
+                editableElements.forEach((element) => {
+                    element.contentEditable = true;
+                });
+
+                // These are event listeners, as to make the content editable after the loading thingy
+                const addCardButtons = board.querySelectorAll('.add-card');
+                addCardButtons.forEach((button) => {
+                    button.addEventListener('click', function () {
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <p contentEditable="true">Write your text here...</p>
+                            <button class="btn btn-outline-danger delete-card">Remove Card</button>
+                        `;
+                        button.closest('.list').insertBefore(card, button.closest('.list').lastElementChild);
+                    });
+                });
+
+                const deleteListButtons = board.querySelectorAll('.delete-list');
+                deleteListButtons.forEach((button) => {
+                    button.addEventListener('click', function () {
+                        button.closest('.list').remove();
+                    });
+                });
+
+                alert("Projects loaded successfully!");
+            } else {
+                alert("No saved projects found.");
+            }
+        }
+    </script>
+
+    <script>
+        function applySettings() {
+            const toolbar = document.getElementById("toolbar");
+            const colorInput = document.getElementById("toolbarColorInput");
+
+            toolbar.style.backgroundColor = colorInput.value;
+
+            // You can save the color value in local storage or wherever you prefer
+            localStorage.setItem("toolbarColor", colorInput.value);
+
+            // Close the settings modal
+            $('#settingsModal').modal('hide');
+        }
+
+        // Initialize the toolbar color from local storage or a default value
+        const storedToolbarColor = localStorage.getItem("toolbarColor");
+        if (storedToolbarColor) {
+            document.getElementById("toolbar").style.backgroundColor = storedToolbarColor;
+        }
+    </script>
+
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="/docs/4.1/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+        </a>
+    </nav>
+
+</body>
+
+</html>
